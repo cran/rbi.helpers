@@ -214,11 +214,11 @@ pre code {
 
 <h1>Introduction to RBi.helpers</h1>
 
-<p>Sebastian Funk on February 13, 2019</p>
+<p>Sebastian Funk on July 10, 2019</p>
 
 <p><a href="https://github.com/sbfnk/RBi.helpers">RBi.helpers</a> is collection of helper functions to use with <a href="https://github.com/libbi/RBi">RBi</a>, an R interface to <a href="https://github.com/libbi/LibBi">LibBi</a>, a library for Bayesian Inference.</p>
 
-<h3>Latest Version: <em>0.3.0</em></h3>
+<h3>Latest Version: <em>0.3.1</em></h3>
 
 <p>This vignette builds on the <a href="https://CRAN.R-project.org/package=rbi/vignettes/introduction.html">RBi vignette</a>, applying the higher-level functions contained in <strong>RBi.helpers</strong> to the same model introduced there.
 For the lower-level functions to run <strong>LibBi</strong> and read the results, please refer to the documentation and vignette that comes with <strong>RBi</strong>.</p>
@@ -257,31 +257,6 @@ install_github(&quot;sbfnk/rbi.helpers&quot;)
 <pre><code class="r">library(&#39;rbi.helpers&#39;)
 </code></pre>
 
-<pre><code>## Loading required package: rbi
-</code></pre>
-
-<pre><code>## 
-## Attaching package: &#39;rbi&#39;
-</code></pre>
-
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, optimise, simulate, update
-</code></pre>
-
-<pre><code>## The following object is masked from &#39;package:utils&#39;:
-## 
-##     fix
-</code></pre>
-
-<pre><code>## The following object is masked from &#39;package:base&#39;:
-## 
-##     sample
-</code></pre>
-
-<pre><code>## Loading required package: data.table
-</code></pre>
-
 <p>to load the package.</p>
 
 <h1>Loading the model and generating a synthetic dataset</h1>
@@ -292,10 +267,6 @@ install_github(&quot;sbfnk/rbi.helpers&quot;)
 SIRmodel &lt;- bi_model(model_file) # load model
 set.seed(1001912)
 SIRdata &lt;- bi_generate_dataset(SIRmodel, end_time=16*7, noutputs=16)
-</code></pre>
-
-<pre><code>## Error in run.libbi(x, client = &quot;sample&quot;, ...): LibBi terminated with &quot;Error: make failed with return code 2, see /private/var/folders/k_/8wrb49vn4713j7fn6y3hmndm0000gn/T/RtmpauuJzl/SIRc8ac1567aaf0/.SIR/build_assert_openmp_sm_30/make.log for details&quot;.
-## You can view a full log using &quot;print_log(&#39;/private/var/folders/k_/8wrb49vn4713j7fn6y3hmndm0000gn/T/RtmpauuJzl/SIRc8ac1567aaf0/outputc8ac49077d8a.txt&#39;)&quot;
 </code></pre>
 
 <h1>Adapt the number of particles</h1>
@@ -312,9 +283,6 @@ In <strong>RBi</strong>, this can be achieved with</p>
 <pre><code class="r">bi_prior &lt;- sample(proposal=&quot;prior&quot;, SIRmodel, nsamples=1000, end_time=16*7, nparticles=4, obs=SIRdata, seed=1234)
 </code></pre>
 
-<pre><code>## Error in get(arg): object &#39;SIRdata&#39; not found
-</code></pre>
-
 <p>This runs particle MCMC with the prior distribution as proposal distribution (because <code>proposal=&quot;prior&quot;</code>), in this case with 4 particles.
 In other words, when sampling from the posterior the proposals will be drawn independently from the prior distribution.
 Note that we set a seed to make the results reproducible.
@@ -325,7 +293,31 @@ This can then be used to adjust the number of particles using</p>
 <pre><code class="r">adapted &lt;- adapt_particles(bi_prior)
 </code></pre>
 
-<pre><code>## Error in adapt_particles(bi_prior): object &#39;bi_prior&#39; not found
+<pre><code>## Wed Jul 10 11:50:32 2019 Adapting the number of particles
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:50:42 2019 4 particles, loglikelihod variance: 1023.55412595736
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:50:46 2019 8 particles, loglikelihod variance: 33.6754090462797
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:50:51 2019 16 particles, loglikelihod variance: 10.2735034458929
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:50:59 2019 32 particles, loglikelihod variance: 1.83073049163988
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:51:14 2019 64 particles, loglikelihod variance: 1.80600281507059
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:51:44 2019 128 particles, loglikelihod variance: 1.33257553201926
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:52:39 2019 256 particles, loglikelihod variance: 0.872477311579686
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:52:39 2019 Choosing 256 particles.
 </code></pre>
 
 <p>This will take the last sample of the output file contained in the <code>libbi</code> object <code>bi_prior</code>, and use it to adjust the number of particles by starting with 1 particle (or a given <code>min</code>) and doubling it until the variance of the loglikelihood crosses 1.
@@ -334,7 +326,7 @@ The number of particles is then saved in the <code>adapted</code> object:</p>
 <pre><code class="r">adapted$options$nparticles
 </code></pre>
 
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;adapted&#39; not found
+<pre><code>## [1] 256
 </code></pre>
 
 <h1>Adapt the proposal distribution</h1>
@@ -347,10 +339,16 @@ For example, to adjust the proposal distribution for an acceptance rate between 
 <pre><code class="r">adapted &lt;- adapt_proposal(adapted, min=0.05, max=0.4)
 </code></pre>
 
-<pre><code>## Wed Feb 13 12:12:50 2019 Adapting the proposal distribution
+<pre><code>## Wed Jul 10 11:52:39 2019 Adapting the proposal distribution
 </code></pre>
 
-<pre><code>## Error in &quot;bi_model&quot; %in% class(model): object &#39;adapted&#39; not found
+<pre><code>## Wed Jul 10 11:52:40 2019 Initial trial run
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:53:46 2019 Acceptance rate 0.406406406406406, adapting size with scale 1
+</code></pre>
+
+<pre><code>## Wed Jul 10 11:54:43 2019 Acceptance rate: 0.387387387387387
 </code></pre>
 
 <p>The covariance matrices for parameters and initial conditions are stored in the input file contained in the <code>libbi</code> object <code>adapted</code></p>
@@ -358,7 +356,12 @@ For example, to adjust the proposal distribution for an acceptance rate between 
 <pre><code class="r">bi_read(adapted, file=&quot;input&quot;)
 </code></pre>
 
-<pre><code>## Error in bi_open(x, file): object &#39;adapted&#39; not found
+<pre><code>## $`__proposal_parameter_cov`
+##   __dim_parameter_cov.1 __dim_parameter_cov.2      value
+## 1                 p_rep                 p_rep 0.08880033
+## 2                 p_rep                  p_R0 0.00000000
+## 3                  p_R0                 p_rep 0.00000000
+## 4                  p_R0                  p_R0 0.35165480
 </code></pre>
 
 <h1>Compute DIC</h1>
@@ -366,15 +369,10 @@ For example, to adjust the proposal distribution for an acceptance rate between 
 <p>To compute the <a href="https://en.m.wikipedia.org/wiki/Deviance_information_criterion">Deviance Information Criterion</a> (DIC), use <code>DIC</code>:</p>
 
 <pre><code class="r">posterior &lt;- sample(adapted)
+DIC(posterior)
 </code></pre>
 
-<pre><code>## Error in sample(adapted): object &#39;adapted&#39; not found
-</code></pre>
-
-<pre><code class="r">DIC(posterior)
-</code></pre>
-
-<pre><code>## Error in DIC(posterior): object &#39;posterior&#39; not found
+<pre><code>## [1] 126.5054
 </code></pre>
 
 <p>This samples from the posterior distribution using the adapted number of particles and proposal distribution and then calculates the DIC.</p>
@@ -384,29 +382,31 @@ For example, to adjust the proposal distribution for an acceptance rate between 
 <p>LibBi uses real-valued times. To convert these to time or date objects for use in R, use the <code>numeric_to_time</code> function:</p>
 
 <pre><code class="r">res &lt;- numeric_to_time(posterior, unit=&quot;day&quot;, origin=as.Date(&quot;2018-04-01&quot;))
+head(res$Z)
 </code></pre>
 
-<pre><code>## Error in &quot;libbi&quot; %in% class(x): object &#39;posterior&#39; not found
-</code></pre>
-
-<pre><code class="r">head(res$Z)
-</code></pre>
-
-<pre><code>## Error in head(res$Z): object &#39;res&#39; not found
+<pre><code>##   np       time      value
+## 1  0 2018-04-01   1.000000
+## 2  0 2018-04-08   9.567902
+## 3  0 2018-04-15  95.638054
+## 4  0 2018-04-22  85.915564
+## 5  0 2018-04-29 280.458185
+## 6  0 2018-05-06 134.560334
 </code></pre>
 
 <p>The function <code>time_to_numeric</code> does the converse, converting R times or dates into numeric values for use by LibBi:</p>
 
 <pre><code class="r">orig &lt;- time_to_numeric(res, unit=&quot;day&quot;, origin=as.Date(&quot;2018-04-01&quot;))
+head(orig$Z)
 </code></pre>
 
-<pre><code>## Error in is.data.frame(x): object &#39;res&#39; not found
-</code></pre>
-
-<pre><code class="r">head(orig$Z)
-</code></pre>
-
-<pre><code>## Error in head(orig$Z): object &#39;orig&#39; not found
+<pre><code>##   np time      value
+## 1  0    0   1.000000
+## 2  0    7   9.567902
+## 3  0   14  95.638054
+## 4  0   21  85.915564
+## 5  0   28 280.458185
+## 6  0   35 134.560334
 </code></pre>
 
 <h1>Create inference chains</h1>

@@ -214,7 +214,7 @@ pre code {
 
 <h1>Introduction to RBi.helpers</h1>
 
-<p>Sebastian Funk on July 10, 2019</p>
+<p>Sebastian Funk on June 18, 2020</p>
 
 <p><a href="https://github.com/sbfnk/RBi.helpers">RBi.helpers</a> is collection of helper functions to use with <a href="https://github.com/libbi/RBi">RBi</a>, an R interface to <a href="https://github.com/libbi/LibBi">LibBi</a>, a library for Bayesian Inference.</p>
 
@@ -293,31 +293,31 @@ This can then be used to adjust the number of particles using</p>
 <pre><code class="r">adapted &lt;- adapt_particles(bi_prior)
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:50:32 2019 Adapting the number of particles
+<pre><code>## Thu Jun 18 12:17:32 2020 Adapting the number of particles
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:50:42 2019 4 particles, loglikelihod variance: 1023.55412595736
+<pre><code>## Thu Jun 18 12:17:43 2020 4 particles, loglikelihod variance: 1023.55412595736
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:50:46 2019 8 particles, loglikelihod variance: 33.6754090462797
+<pre><code>## Thu Jun 18 12:17:45 2020 8 particles, loglikelihod variance: 33.6754090462797
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:50:51 2019 16 particles, loglikelihod variance: 10.2735034458929
+<pre><code>## Thu Jun 18 12:17:48 2020 16 particles, loglikelihod variance: 10.2735034458929
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:50:59 2019 32 particles, loglikelihod variance: 1.83073049163988
+<pre><code>## Thu Jun 18 12:17:54 2020 32 particles, loglikelihod variance: 1.83073049163988
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:51:14 2019 64 particles, loglikelihod variance: 1.80600281507059
+<pre><code>## Thu Jun 18 12:18:03 2020 64 particles, loglikelihod variance: 1.80600281507059
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:51:44 2019 128 particles, loglikelihod variance: 1.33257553201926
+<pre><code>## Thu Jun 18 12:18:21 2020 128 particles, loglikelihod variance: 1.33257553201926
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:52:39 2019 256 particles, loglikelihod variance: 0.872477311579686
+<pre><code>## Thu Jun 18 12:18:55 2020 256 particles, loglikelihod variance: 0.872477311579686
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:52:39 2019 Choosing 256 particles.
+<pre><code>## Thu Jun 18 12:18:55 2020 Choosing 256 particles.
 </code></pre>
 
 <p>This will take the last sample of the output file contained in the <code>libbi</code> object <code>bi_prior</code>, and use it to adjust the number of particles by starting with 1 particle (or a given <code>min</code>) and doubling it until the variance of the loglikelihood crosses 1.
@@ -339,16 +339,16 @@ For example, to adjust the proposal distribution for an acceptance rate between 
 <pre><code class="r">adapted &lt;- adapt_proposal(adapted, min=0.05, max=0.4)
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:52:39 2019 Adapting the proposal distribution
+<pre><code>## Thu Jun 18 12:18:55 2020 Adapting the proposal distribution
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:52:40 2019 Initial trial run
+<pre><code>## Thu Jun 18 12:18:55 2020 Initial trial run
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:53:46 2019 Acceptance rate 0.406406406406406, adapting size with scale 1
+<pre><code>## Thu Jun 18 12:19:38 2020 Acceptance rate 0.406406406406406, adapting size with scale 1
 </code></pre>
 
-<pre><code>## Wed Jul 10 11:54:43 2019 Acceptance rate: 0.387387387387387
+<pre><code>## Thu Jun 18 12:20:13 2020 Acceptance rate: 0.387387387387387
 </code></pre>
 
 <p>The covariance matrices for parameters and initial conditions are stored in the input file contained in the <code>libbi</code> object <code>adapted</code></p>

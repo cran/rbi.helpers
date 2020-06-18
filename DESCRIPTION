@@ -1,5 +1,5 @@
 Package: rbi.helpers
-Version: 0.3.1
+Version: 0.3.2
 Title: 'RBi' Helper Functions
 Author: Sebastian Funk <sebastian.funk@lshtm.ac.uk>
 Maintainer: Sebastian Funk <sebastian.funk@lshtm.ac.uk>
@@ -13,9 +13,9 @@ URL: http://libbi.org, https://github.com/sbfnk/RBi,
 BugReports: https://github.com/sbfnk/RBi.helpers/issues
 SystemRequirements: libbi (>= 1.4.2)
 LazyLoad: no
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 VignetteBuilder: R.rsp
 NeedsCompilation: no
-Packaged: 2019-07-10 10:55:52 UTC; seb
+Packaged: 2020-06-18 11:20:55 UTC; eidesfun
 Repository: CRAN
-Date/Publication: 2019-07-10 11:10:03 UTC
+Date/Publication: 2020-06-18 16:50:03 UTC

@@ -1,6 +1,6 @@
-d99fa89a80be5cce145f9c4558e11a83 *DESCRIPTION
+9822a3c57e6c26db0dde82d9cb30f61c *DESCRIPTION
 6a7a13abe3f29b5f28141c74a6a8e9d2 *NAMESPACE
-79a95d781a54eeff5be9efd2b9648d2d *NEWS.md
+d45a203557ce9e0565be2fedcbd0dbb4 *NEWS.md
 2280192073e3681cceb47d25a8389640 *R/DIC.R
 b573b22287eb3b0bba931c7128790613 *R/acceptance_rate.R
 eccdaa1f127d3b3c8056bcc57d487dc4 *R/adapt_particles.R
@@ -8,10 +8,10 @@ eccdaa1f127d3b3c8056bcc57d487dc4 *R/adapt_particles.R
 070f0bfe661919f1e2fb6d325b4e35c0 *R/get_mvn_params.r
 525a1f0518b613398894a5d58205c374 *R/times.r
 ec995233369bacd93445202e7516dd53 *R/update_proposal.r
-b506f5049a5f8e75e4bf005d09a2350e *README.md
-256021ab9d298fcc8a12d17fc1289879 *build/vignette.rds
-82cd4ac241df9cd27665378e0921d939 *inst/doc/introduction.Rmd.rsp
-63992fe844d9f4255acaf26f75befcc5 *inst/doc/introduction.html
+9eb3c3282325c31e7158bcc879dc2758 *README.md
+a891532a3dc16e15f543415434536482 *build/vignette.rds
+680a9bf595bcdff0f2422b11ba44d78d *inst/doc/introduction.Rmd.rsp
+464ec08e846d0f82013b49c058168d7c *inst/doc/introduction.html
 71c1aa8f20fdbe2f772d05765092f711 *inst/example_run.nc
 3d0fe584604a02ec88844c98c7d16bed *man/DIC.Rd
 b422725ed1da23b6eeeae95086a99ba9 *man/acceptance_rate.Rd
@@ -27,4 +27,4 @@ bea00a55540d67e533064607e0279ad7 *tests/testthat.R
 441117fc686bee87bc816b37833fb0d8 *tests/testthat/test-adapt.r
 1addb8f321c337eab8f0609a542b9e1a *tests/testthat/test-proposal.r
 e84334fa37e89fc4fbf484668d545598 *tests/testthat/test-times.r
-82cd4ac241df9cd27665378e0921d939 *vignettes/introduction.Rmd.rsp
+680a9bf595bcdff0f2422b11ba44d78d *vignettes/introduction.Rmd.rsp

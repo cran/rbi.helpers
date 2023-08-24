@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Sebastian Funk" />
+
+
+<title>Introduction to rbi.helpers</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to rbi.helpers</h1>
+<h4 class="author">Sebastian Funk</h4>
+
+
+
+<p><a href="https://github.com/sbfnk/rbi.helpers">rbi.helpers</a> is
+collection of helper functions to use with <a href="https://github.com/sbfnk/rbi">rbi</a>, an R interface to <a href="https://github.com/lawmurray/LibBi">LibBi</a>, a library for
+Bayesian Inference.</p>
+<p>This vignette builds on the <a href="https://sbfnk.github.io/rbi/articles/introduction.html">rbi
+vignette</a>, applying the higher-level functions contained in
+<strong>rbi.helpers</strong> to the same model introduced there. For the
+lower-level functions to run <strong>LibBi</strong> and read the
+results, please refer to the documentation and vignette that comes with
+<strong>rbi</strong>.</p>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>The easiest way to install the latest stable version of
+<strong>rbi.helpers</strong> is via CRAN. The package name is
+<code>rbi.helpers</code> (all lowercase):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;rbi.helpers&quot;</span>)</span></code></pre></div>
+<p>Alternatively, the current development version can be installed using
+the <code>remotes</code> package</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;sbfnk/rbi.helpers&quot;</span>)</span></code></pre></div>
+<p>Most functions in the <strong>rbi.helpers</strong> package require a
+working installation of <strong>LibBi</strong>. Please see the <a href="https://sbfnk.github.io/rbi/articles/introduction.html">rbi
+vignette</a> for how to get one via homebrew or linuxbrew.</p>
+</div>
+<div id="loading-the-package" class="section level1">
+<h1>Loading the package</h1>
+<p>Use</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rbi&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;rbi.helpers&quot;</span>)</span></code></pre></div>
+<p>to load the package.</p>
+</div>
+<div id="loading-the-model-and-generating-a-synthetic-dataset" class="section level1">
+<h1>Loading the model and generating a synthetic dataset</h1>
+<p>These steps are reproduced from the <a href="https://sbfnk.github.io/rbi/articles/introduction.html">rbi
+vignette</a>, where there is more information on the individual
+steps</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>model_file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package =</span> <span class="st">&quot;rbi&quot;</span>, <span class="st">&quot;SIR.bi&quot;</span>) <span class="co"># file included in package</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>sir_model <span class="ot">&lt;-</span> <span class="fu">bi_model</span>(model_file) <span class="co"># load model</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1001912</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>sir_data <span class="ot">&lt;-</span> <span class="fu">bi_generate_dataset</span>(sir_model, <span class="at">end_time =</span> <span class="dv">16</span> <span class="sc">*</span> <span class="dv">7</span>, <span class="at">noutputs =</span> <span class="dv">16</span>)</span></code></pre></div>
+</div>
+<div id="adapt-the-number-of-particles" class="section level1">
+<h1>Adapt the number of particles</h1>
+<p>In the <a href="https://sbfnk.github.io/rbi/articles/introduction.html">rbi
+vignette</a>, a <a href="https://raw.githubusercontent.com/sbfnk/rbi/master/inst/SIR.bi">stochastic
+SIR model</a> is fitted to simulated data from the same model using
+particle Markov-chain Monte Carlo with 32 particles. Given a model and
+data, how do we know how many particles we need? This question does not
+have a simple answer, as the “optimal” number of particles may depend on
+the state of the Markov chain. A possible rule-of-thumb is to choose the
+number of particles such that the variance of the log-likelihood near
+the mode is approximately one. This suggests a <a href="https://darrenjw.wordpress.com/2014/06/08/tuning-particle-mcmc-algorithms/">strategy</a>
+by which first and approximate location of the mode or mean of the
+posterior distribution is obtained in a trial run, before the numer of
+particles is adjusted by monitoring the variance of the log-likelihood
+while keeping the parameters fixed. <strong>rbi.helpers</strong>
+implements the second part of this strategy (adjusting the number of
+particles at a given location in parameter space) with the
+<code>adapt_particles</code> method. For the first part (finding the
+mode), a crude method is to take a fixed number of samples from the
+prior distribution and choose the one that maximises the posterior. In
+<strong>rbi</strong>, this can be achieved with</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>bi_prior <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">proposal =</span> <span class="st">&quot;prior&quot;</span>, sir_model, <span class="at">nsamples =</span> <span class="dv">1000</span>, <span class="at">end_time =</span> <span class="dv">16</span> <span class="sc">*</span> <span class="dv">7</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">nparticles =</span> <span class="dv">4</span>, <span class="at">obs =</span> sir_data, <span class="at">seed =</span> <span class="dv">1234</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>)</span></code></pre></div>
+<p>This runs particle MCMC with the prior distribution as proposal
+distribution (because <code>proposal = &quot;prior&quot;</code>), in this case
+with 4 particles. In other words, when sampling from the posterior the
+proposals will be drawn independently from the prior distribution. Note
+that we set a seed to make the results reproducible. It is worth trying
+the commands with a different seed and seeing the difference to the
+results obtained below. The location in parameters of the sampler at the
+end of the 1000 iterations will give an approximation of the mode of the
+posterior distribution. This can then be used to adjust the number of
+particles using</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>adapted <span class="ot">&lt;-</span> <span class="fu">adapt_particles</span>(bi_prior)</span></code></pre></div>
+<p>This will take the last sample of the output file contained in the
+<code>libbi</code> object <code>bi_prior</code>, and use it to adjust
+the number of particles by starting with 1 particle (or a given
+<code>min</code>) and doubling it until the variance of the
+loglikelihood crosses 1. The number of particles is then saved in the
+<code>adapted</code> object:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>adapted<span class="sc">$</span>options<span class="sc">$</span>nparticles</span></code></pre></div>
+</div>
+<div id="adapt-the-proposal-distribution" class="section level1">
+<h1>Adapt the proposal distribution</h1>
+<p>Having adjusted the number of particles, the second important
+information to give the posterior sampler is the proposal distribution.
+This can, again, be obtained using a sequence of trial runs, whereby the
+proposal distribution is sequentially adjusted from previous samples to
+be proportional to the empirical covariance of the posterior samples.
+The way this is implemented in the <code>adapt_proposal</code> function
+in <strong>rbi.helpers</strong> is that the proposal distribution is
+adjusted to come from a multivariate normal taking into account the
+covariance of samples obtained so far, until the acceptance rate lies
+between the given minimum and maximumad. For example, to adjust the
+proposal distribution for an acceptance rate between 0.05 and 0.4, we
+can run:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>adapted <span class="ot">&lt;-</span> <span class="fu">adapt_proposal</span>(adapted, <span class="at">min =</span> <span class="fl">0.05</span>, <span class="at">max =</span> <span class="fl">0.4</span>)</span></code></pre></div>
+<p>The covariance matrices for parameters and initial conditions are
+stored in the input file contained in the <code>libbi</code> object
+<code>adapted</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">bi_read</span>(adapted, <span class="at">file =</span> <span class="st">&quot;input&quot;</span>)</span></code></pre></div>
+</div>
+<div id="compute-dic" class="section level1">
+<h1>Compute DIC</h1>
+<p>To compute the <a href="https://en.m.wikipedia.org/wiki/Deviance_information_criterion">Deviance
+Information Criterion</a> (DIC), use <code>DIC</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> <span class="fu">sample</span>(adapted)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">DIC</span>(posterior)</span></code></pre></div>
+<p>This samples from the posterior distribution using the adapted number
+of particles and proposal distribution and then calculates the DIC.</p>
+</div>
+<div id="convert-between-libbi-times-and-actual-times-or-dates" class="section level1">
+<h1>Convert between LibBi times and actual times or dates</h1>
+<p>LibBi uses real-valued times. To convert these to time or date
+objects for use in R, use the <code>numeric_to_time</code> function:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">numeric_to_time</span>(posterior, <span class="at">unit =</span> <span class="st">&quot;day&quot;</span>, <span class="at">origin =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2018-04-01&quot;</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">head</span>(res<span class="sc">$</span>Z)</span></code></pre></div>
+<p>The function <code>time_to_numeric</code> does the converse,
+converting R times or dates into numeric values for use by LibBi:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>orig <span class="ot">&lt;-</span> <span class="fu">time_to_numeric</span>(res, <span class="at">unit =</span> <span class="st">&quot;day&quot;</span>, <span class="at">origin =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2018-04-01&quot;</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">head</span>(orig<span class="sc">$</span>Z)</span></code></pre></div>
+</div>
+<div id="create-inference-chains" class="section level1">
+<h1>Create inference chains</h1>
+<p>With the pipe operator available since R version 4.1, it is possible
+to construct inference chains more elegantly. For example, to get
+posterior samples from adapted Metropolis-Hastings including sampled
+observations, we could have written</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>posterior <span class="ot">&lt;-</span> <span class="fu">sample</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="at">proposal =</span> <span class="st">&quot;prior&quot;</span>, sir_model, <span class="at">nsamples =</span> <span class="dv">1000</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="at">end_time =</span> <span class="dv">16</span> <span class="sc">*</span> <span class="dv">7</span>, <span class="at">nparticles =</span> <span class="dv">4</span>, <span class="at">obs =</span> sir_data, <span class="at">seed =</span> <span class="dv">1234</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="fu">adapt_particles</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="fu">adapt_proposal</span>(<span class="at">min =</span> <span class="fl">0.05</span>, <span class="at">max =</span> <span class="fl">0.4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="fu">sample</span>(<span class="at">nsamples =</span> <span class="dv">5000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>  <span class="fu">sample_obs</span>()</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

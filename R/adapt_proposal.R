@@ -2,7 +2,7 @@
 #' @name adapt_proposal
 #' @title Adapt the proposal distribution of MCMC using the covariance
 #'   of samples
-#' @description This function takes the provided \code{\link{libbi}} object and
+#' @description This function takes the provided [rbi::libbi()] object and
 #'   runs MCMC, adapting the proposal distribution until the desired
 #'   acceptance rate is achieved. If a scale is given, it will be used
 #'   to adapt the proposal at each iteration
@@ -27,8 +27,8 @@
 #'   according to the support of the prior distributions
 #' @param quiet if set to TRUE, will not provide running output of particle
 #'   numbers tested
-#' @param ... parameters for \code{\link{sample}}
-#' @return a \code{\link{libbi}} with the desired proposal distribution
+#' @param ... parameters for [rbi::sample()]
+#' @return a [rbi::libbi()] with the desired proposal distribution
 #' @importFrom rbi get_traces sample enable_outputs get_dims
 #'   attach_data
 #' @examples
@@ -117,8 +117,9 @@ adapt_proposal <- function(x, min = 0, max = 1, scale = 2, max_iter = 10,
     iter <- 1
     adapt_scale <- 1
     while ((round == 2 && !shape_adapted) ||
-      (min(acc_rate) < min || max(acc_rate) > max || !is.finite(acc_rate)) &&
-        iter <= max_iter) {
+             (min(acc_rate) < min || max(acc_rate) > max ||
+                !is.finite(acc_rate)) &&
+               iter <= max_iter) {
       if (is.finite(acc_rate)) {
         if (!quiet) {
           message(

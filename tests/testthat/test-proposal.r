@@ -1,8 +1,6 @@
 context("Testing generating multivariate proposals")
 
-library(data.table)
 set.seed(12124)
-setDTthreads(1)
 
 model_str <- "
 model test {

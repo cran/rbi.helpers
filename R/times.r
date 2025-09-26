@@ -19,7 +19,7 @@ split_unit <- function(unit_string) {
     amount <- 1
     unit <- unit_string
   }
-  return(list(num = amount, unit = unit))
+  list(num = amount, unit = unit)
 }
 
 #' @rdname numeric_to_time
@@ -27,7 +27,7 @@ split_unit <- function(unit_string) {
 #' @title Convert numeric times to actual times or dates
 #' @description This function converts from numeric times (i.e., 0, 1, 2, ...)
 #'   to actual times or dates
-#' @param x a \code{\link{libbi}} object which has been run, or a list of data
+#' @param x a [rbi::libbi()] object which has been run, or a list of data
 #'     frames containing state trajectories (as returned by \code{bi_read})
 #' @param origin the time origin, i.e. the date or time corresponding to time 0
 #' @param unit the unit of time that each time step corresponds to; this must be
@@ -61,7 +61,7 @@ numeric_to_time <- function(x, origin, unit, ...) {
     }
   }
 
-  return(vars)
+  vars
 }
 
 #' @rdname time_to_numeric
@@ -97,7 +97,7 @@ time_to_numeric <- function(x, origin, unit) {
     if (is.data.frame(vars[[var]]) && "time" %in% colnames(vars[[var]])) {
       vars[[var]][["time"]] <-
         as.interval(vars[[var]][["time"]] - origin, origin) /
-          do.call(period, time_step)
+        do.call(period, time_step)
     }
   }
 
@@ -105,5 +105,5 @@ time_to_numeric <- function(x, origin, unit) {
     vars <- vars$df
   }
 
-  return(vars)
+  vars
 }

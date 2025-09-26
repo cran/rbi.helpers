@@ -1,9 +1,5 @@
 context("Testing functions for adapting")
 
-library(data.table)
-set.seed(12124)
-setDTthreads(1)
-
 model <- system.file(package = "rbi", "PZ.bi")
 example_output <- rbi::bi_read(
   system.file(package = "rbi", "example_output.nc")
